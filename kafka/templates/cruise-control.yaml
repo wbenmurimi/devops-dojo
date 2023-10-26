@@ -1,0 +1,17 @@
+{{- if .Values.cruiseControl.enabled }}
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaRebalance
+metadata:
+  name: demo-rebalance
+  labels:
+    strimzi.io/cluster: {{ .Values.clusterName }}
+spec:
+  goals:
+    - CpuCapacityGoal
+    - NetworkInboundCapacityGoal
+    - DiskCapacityGoal
+    - RackAwareGoal
+    - MinTopicLeadersPerBrokerGoal
+    - NetworkOutboundCapacityGoal
+    - ReplicaCapacityGoal
+{{- end }}

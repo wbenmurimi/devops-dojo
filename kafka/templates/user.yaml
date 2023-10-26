@@ -1,0 +1,68 @@
+{{- if .Values.users.user.enabled }}
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: demo-user
+  labels:
+    strimzi.io/cluster: {{ .Values.clusterName }}
+spec:
+  {{- if .Values.users.userAuthentication.enabled }}
+  authentication:
+    type: scram-sha-512
+  {{- end }}
+  {{- if .Values.users.userAuthorization.enabled }}
+  authorization:
+    type: simple
+    acls:
+      # Example ACL rules for consuming from configured topics using consumer group set
+    {{- if .Values.users.consumerDescribeReadOperation.enabled }}
+      - resource:
+          type: topic
+          name: {{ .Values.users.topicName }}
+          patternType: prefix
+        operation: Read
+        host: "*"
+    {{- end }}
+    {{- if .Values.users.consumerDescribeReadOperation.enabled }}
+      - resource:
+          type: topic
+          name: {{ .Values.users.topicName }}
+          patternType: prefix
+        operation: Describe
+        host: "*"
+    {{- end }}
+    {{- if .Values.users.consumerGroupReadOperation.enabled }}
+      - resource:
+          type: group
+          name: {{ .Values.users.groupName }}
+          patternType: prefix
+        operation: Read
+        host: "*"
+    {{- end }}
+      # Example ACL rules for producing to my topics
+    {{- if .Values.users.producerDescribeWriteOperation.enabled }}
+      - resource:
+          type: topic
+          name: {{ .Values.users.topicName }}
+          patternType: prefix
+        operation: Describe
+        host: "*"
+    {{- end }}
+    {{- if .Values.users.producerDescribeWriteOperation.enabled }}
+      - resource:
+          type: topic
+          name: {{ .Values.users.topicName }}
+          patternType: prefix
+        operation: Write
+        host: "*"
+    {{- end }}
+    {{- if .Values.users.producerCreateOperation.enabled }}
+      - resource:
+          type: topic
+          name: {{ .Values.users.topicName }}
+          patternType: prefix
+        operation: Create
+        host: "*"
+    {{- end }}
+  {{- end }}
+{{- end }}

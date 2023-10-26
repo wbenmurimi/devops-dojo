@@ -1,0 +1,13 @@
+{{- range $topic := .Values.topics }}
+{{- if $topic.enabled }}
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: {{ $topic.name }}
+  labels:
+    strimzi.io/cluster: demo-cluster
+spec:
+{{ toYaml $topic.spec | indent 2 }}
+---
+{{- end }}
+{{- end }}
