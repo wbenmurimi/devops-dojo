@@ -84,7 +84,7 @@ topics:
         retention.ms: 86400000
         segment.bytes: 1073741824
   users:
-    enabled: false
+    enabled: true
     name: kgl.dev.myapp.users
     spec:
       partitions: 3
@@ -93,7 +93,7 @@ topics:
         retention.ms: 86400000
         segment.bytes: 1073741824
   products:
-    enabled: true
+    enabled: false
     name: kgl.dev.myapp.products
     spec:
       partitions: 3
